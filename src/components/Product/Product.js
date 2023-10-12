@@ -9,7 +9,7 @@ function Product({ product, displayModal }) {
     return (
         <Col md={6} xl={3}>
             <Card className="product-item ">
-                <Card.Img variant="top" src={product.image} />
+                <Card.Img variant="top" src={product.thumbnail} />
                 <Card.Body>
                     <Card.Title>
                         {product.title.length > 50

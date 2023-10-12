@@ -6,6 +6,7 @@ import { productList } from "../../datas/products";
 import { Row, Modal } from "react-bootstrap";
 import Button from "../Button/Buttons";
 import CartItemQuantityManager from "../Cart/CartItemQuantityManager";
+import AddToCart from "../Cart/AddToCart";
 
 function ProductList() {
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -56,27 +57,27 @@ function ProductList() {
                             <div className="col-4 d-flex align-items-center justify-content-center ">
                                 <img
                                     className="product-image"
-                                    src={selectedProduct.image}
+                                    src={selectedProduct.thumbnail}
                                     alt=""
                                 />
                             </div>
-                            <div className="col-8">
-                                <p>{selectedProduct.description}</p>
-                                <p className="product-price">
-                                    {selectedProduct.price} €
-                                </p>
-                                <CartItemQuantityManager />
+                            <div className="col-8 d-flex flex-column justify-content-between">
+                                <div>
+                                    <p>{selectedProduct.description}</p>
+                                    <p className="product-price">
+                                        {selectedProduct.price} €
+                                    </p>
+                                </div>
+                                <div className="d-flex align-items-center justify-content-end">
+                                    <AddToCart
+                                        product={selectedProduct}
+                                        setShow={setShow}
+                                    />
+                                </div>
                             </div>
                         </div>
                     ) : null}
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        variant="secondary"
-                        onClick={handleClose}
-                        text="Fermer"
-                    />
-                </Modal.Footer>
             </Modal>
         </>
     );

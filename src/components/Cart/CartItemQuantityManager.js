@@ -1,19 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../Input/Input";
 import Button from "../Button/Buttons";
 
-function CartItemQuantityManager() {
-    const { item, setItem } = useState({ productId: "", quantity: "" });
+import {
+    addToCart,
+    updateProduct,
+    deleteProduct,
+} from "../../services/Cart/Cart";
+
+function CartItemQuantityManager({ product }) {
+    const [item, setItem] = useState({ productId: "", quantity: "0" });
+    const [productQuantity, setProductQuantity] = useState(1);
+    // const [productId, setProductId] = useState(0);
+
+    const addToCart = () => {};
+
+    useEffect(() => {
+        setItem((current) => {
+            return { ...current, productId: product.id };
+        });
+    }, []);
+
+    useEffect(() => {
+        setItem((current) => {
+            return { ...current, quantity: productQuantity };
+        });
+    }, [productQuantity]);
 
     return (
         <form>
-            <label htmlFor="" className="text-end">
-                Quantité
-            </label>
-            <div className="d-flex flex-row flex-nowrap">
-                <Button onClick={() => setItem()} variant="" text="-"></Button>
-                <Input value={item} onChange={setItem} type="number" />
-                <Button onClick={() => setItem()} variant="" text="+"></Button>
+            <div className="d-flex flex-row flex-nowrap align-items-center justify-content-end">
+                <label htmlFor="" className="text-end me-2">
+                    Quantité
+                </label>
+                <Button
+                    onClick={() =>
+                        setProductQuantity(
+                            productQuantity - 1 > 0 ? productQuantity - 1 : 1
+                        )
+                    }
+                    variant="primary"
+                    text="-"
+                ></Button>
+                <Input
+                    value={productQuantity}
+                    onChange={setProductQuantity}
+                    type="number"
+                />
+                <Button
+                    onClick={() => setProductQuantity(productQuantity + 1)}
+                    variant="primary"
+                    text="+"
+                    size="sm"
+                ></Button>
             </div>
         </form>
     );
