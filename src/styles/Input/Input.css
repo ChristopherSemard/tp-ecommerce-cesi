@@ -1,0 +1,8 @@
+input,
+textarea {
+    border-radius: 5px;
+    border: 1px solid grey;
+    padding: 0.375em;
+    display: block;
+    margin-bottom: 1em;
+}
