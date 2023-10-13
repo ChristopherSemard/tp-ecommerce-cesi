@@ -17,14 +17,17 @@ function Product({ product, displayModal }) {
                             : product.title}
                     </Card.Title>
                     <Card.Text>
-                        {product.description.slice(0, 60)} ...
+                        {product.description.slice(0, 50)} ...
                     </Card.Text>
+                </Card.Body>
+                <div className="d-flex justify-content-between px-3">
+                    <p className="product-price mb-0">{product.price}€</p>
                     <Button
                         onClick={() => displayModal(product.id)}
                         variant="primary"
                         text="Voir détails"
                     ></Button>
-                </Card.Body>
+                </div>
             </Card>
         </Col>
     );

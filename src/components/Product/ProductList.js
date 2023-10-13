@@ -4,8 +4,6 @@ import Product from "./Product";
 import { productList } from "../../datas/products";
 
 import { Row, Modal } from "react-bootstrap";
-import Button from "../Button/Buttons";
-import CartItemQuantityManager from "../Cart/CartItemQuantityManager";
 import AddToCart from "../Cart/AddToCart";
 
 function ProductList() {
@@ -16,12 +14,10 @@ function ProductList() {
     const handleClose = () => {
         setShow(false);
     };
-    const handleShow = () => setShow(true);
 
     const displayModal = (id) => {
         let product = getProductById(id);
         setSelectedProduct(product);
-        console.log(product);
         setShow(true);
     };
     const getProductById = (id) => {
@@ -35,6 +31,7 @@ function ProductList() {
 
     return (
         <>
+            <h1 className="my-4">Liste de produits</h1>
             <Row className="product-list" gy={4}>
                 {productList.map((product, index) => (
                     <Product

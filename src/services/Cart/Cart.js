@@ -1,21 +1,47 @@
+import { productList } from "../../datas/products";
+
 export function addToCart(newProduct) {
     let actualCart = getCart();
 
-    // console.log(newProduct.id);
-    // console.log(newProduct.id === actualCart[0].id);
     const alreadyIn = actualCart.find(
         (product) => product.id === newProduct.id
     );
 
     if (alreadyIn) {
-        console.log("1");
-        actualCart = updateProduct(newProduct, "increment");
+        updateProduct(newProduct, "increment");
     } else {
         actualCart.push(newProduct);
         saveCart(actualCart);
     }
-    // console.log(newCart);
-    return actualCart;
+    let cartContext = getCartContext();
+    return cartContext;
+}
+
+export function getCartContext() {
+    let cart = getCart();
+    let cartContext = {
+        cart,
+        numberOfDifferentProducts: cart.length,
+        totalNumberOfProducts: getCountOfProducts(cart),
+        totalAmount: getTotalAmount(getCartWithInfos()),
+    };
+    return cartContext;
+}
+export function getTotalAmount(cartWithInfos) {
+    let totalAmount = 0;
+    for (const item of cartWithInfos) {
+        totalAmount = totalAmount + item.quantity * item.product.price;
+    }
+
+    return totalAmount;
+}
+export function getCountOfProducts(cart) {
+    let totalNumberOfProducts = 0;
+    for (const item of cart) {
+        totalNumberOfProducts = totalNumberOfProducts + item.quantity;
+    }
+
+    return totalNumberOfProducts;
 }
 
 export function getCart() {
@@ -25,28 +51,28 @@ export function getCart() {
     return actualCart;
 }
 
-export function deleteProduct(productToDelete) {
+export function deleteProduct(id) {
     let actualCart = getCart();
-    const newCart = actualCart.filter(
-        (product) => product.id !== productToDelete.id
-    );
+    const newCart = actualCart.filter((product) => product.id !== id);
     saveCart(newCart);
-    return newCart;
+    let cartContext = getCartContext();
+    return cartContext;
 }
 
 export function updateProduct(productToUpdate, increment = null) {
     let actualCart = getCart();
 
     const alreadyIn = actualCart.find(
-        (product) => product.id === productToUpdate.id
+        (product) => product.id === productToUpdate.productId
     );
-    if (increment) {
+    if (increment != null) {
         alreadyIn.quantity = alreadyIn.quantity + 1;
     } else {
-        alreadyIn.quantity = 1;
+        alreadyIn.quantity = productToUpdate.quantity;
     }
     saveCart(actualCart);
-    return actualCart;
+    let cartContext = getCartContext();
+    return cartContext;
 }
 
 export function saveCart(cart) {
@@ -55,4 +81,23 @@ export function saveCart(cart) {
 
 export function getCartWithInfos() {
     let cart = getCart();
+    let cartWithInfos = [];
+    for (const item of cart) {
+        let itemWithInfos = {
+            id: item.id,
+            quantity: item.quantity,
+            product: getProduct(item.id),
+        };
+        cartWithInfos.push(itemWithInfos);
+    }
+    return cartWithInfos;
+}
+
+function getProduct(id) {
+    let product = productList.find((product) => product.id === id);
+    if (product) {
+        return product;
+    } else {
+        return null;
+    }
 }

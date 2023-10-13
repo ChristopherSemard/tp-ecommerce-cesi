@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect, useState } from "react";
 import Button from "../Button/Buttons";
-import {
-    addToCart,
-    updateProduct,
-    deleteProduct,
-} from "../../services/Cart/Cart";
+import { addToCart } from "../../services/Cart/Cart";
+import { Context } from "../Context/Context";
 
 function AddToCart({ product, setShow }) {
     const [item, setItem] = useState({ id: "", quantity: 1 });
+    const [, setContext] = useContext(Context);
 
     useEffect(() => {
         setItem((current) => {
@@ -20,7 +18,10 @@ function AddToCart({ product, setShow }) {
         <>
             <Button
                 onClick={() => {
-                    addToCart(item);
+                    setContext((current) => {
+                        return { ...current, cart: addToCart(item) };
+                    });
+
                     setShow(false);
                 }}
                 variant="success"

@@ -9,3 +9,28 @@ body {
 .btn-primary {
     background-color: rgb(38, 46, 77) !important;
 }
+.bg-primary {
+    background-color: rgb(38, 46, 77) !important;
+    color: white;
+}
+.nav-link,
+.navbar-brand {
+    color: white !important;
+}
+.cart-number-items {
+    background-color: rgb(158, 18, 18);
+    border-radius: 50%;
+    color: white;
+    font-weight: 600;
+    height: 25px;
+    width: 25px;
+    position: absolute;
+    left: -12.5px;
+    top: -10px;
+    font-size: 0.9em !important;
+    text-align: center;
+}
+
+form input {
+    max-width: 80px;
+}

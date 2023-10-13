@@ -1,59 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Input from "../Input/Input";
 import Button from "../Button/Buttons";
 
-import {
-    addToCart,
-    updateProduct,
-    deleteProduct,
-} from "../../services/Cart/Cart";
+import { updateProduct, deleteProduct } from "../../services/Cart/Cart";
+import { Context } from "../Context/Context";
 
-function CartItemQuantityManager({ product }) {
-    const [item, setItem] = useState({ productId: "", quantity: "0" });
-    const [productQuantity, setProductQuantity] = useState(1);
-    // const [productId, setProductId] = useState(0);
-
-    const addToCart = () => {};
+function CartItemQuantityManager({ item }) {
+    const [productQuantity, setProductQuantity] = useState(item.quantity);
+    const [, setContext] = useContext(Context);
 
     useEffect(() => {
-        setItem((current) => {
-            return { ...current, productId: product.id };
+        let cartContext = updateProduct({
+            productId: item.id,
+            quantity: productQuantity,
         });
-    }, []);
-
-    useEffect(() => {
-        setItem((current) => {
-            return { ...current, quantity: productQuantity };
+        setContext((current) => {
+            return { ...current, cart: cartContext };
         });
     }, [productQuantity]);
 
+    const deleteItem = (id) => {
+        let cartContext = deleteProduct(id);
+        setContext((current) => {
+            return { ...current, cart: cartContext };
+        });
+    };
+
     return (
-        <form>
-            <div className="d-flex flex-row flex-nowrap align-items-center justify-content-end">
-                <label htmlFor="" className="text-end me-2">
-                    Quantité
-                </label>
-                <Button
-                    onClick={() =>
-                        setProductQuantity(
-                            productQuantity - 1 > 0 ? productQuantity - 1 : 1
-                        )
-                    }
-                    variant="primary"
-                    text="-"
-                ></Button>
-                <Input
-                    value={productQuantity}
-                    onChange={setProductQuantity}
-                    type="number"
-                />
-                <Button
-                    onClick={() => setProductQuantity(productQuantity + 1)}
-                    variant="primary"
-                    text="+"
-                    size="sm"
-                ></Button>
-            </div>
+        <form className="d-flex flex-row flex-nowrap align-items-center justify-content-end">
+            <label htmlFor="" className="text-end me-2">
+                Quantité
+            </label>
+            <Button
+                onClick={() =>
+                    setProductQuantity(
+                        productQuantity - 1 > 0 ? productQuantity - 1 : 1
+                    )
+                }
+                variant="primary"
+                text="-"
+            ></Button>
+            <Input
+                value={productQuantity}
+                onChange={setProductQuantity}
+                type="number"
+            />
+            <Button
+                onClick={() => setProductQuantity(productQuantity + 1)}
+                variant="primary"
+                text="+"
+                size="sm"
+            ></Button>
+            <Button
+                onClick={() => deleteItem(item.id)}
+                variant="danger"
+                text="x"
+                size="sm"
+            ></Button>
         </form>
     );
 }
